@@ -2,7 +2,7 @@ import os
 import signal
 import json
 from flask import Flask
-from buzz import generator
+from src.database import SQLConnector
 from flask_restplus import Api, Resource, fields
 
 flask_app = Flask(__name__)
@@ -20,14 +20,22 @@ model = app.model('Name Model',
 
 signal.signal(signal.SIGINT, lambda s, f: os._exit(0))
 
+#create database connection
+sqlConnector = SQLConnector.SQLConnector()
+
 @name_space.route("/test")     
 class GenerateBuzz(Resource):
 	@app.doc(responses={ 200: 'OK'})
 	def get(self):
-	    page = '<html><body><h1>'
-	    page += generator.generate_buzz()
-	    page += '</h1></body></html>'
-	    return page
+		#execution example
+		cursor = sqlConnector.execute_query("select * from APP_USER")
+
+		page = '<html><body><h1>'
+		
+		#get data from database
+		page += str(cursor.fetchone())
+		page += '</h1></body></html>'
+		return page
 
 if __name__ == "__main__":
     flask_app.run(host='0.0.0.0', port=8080)
