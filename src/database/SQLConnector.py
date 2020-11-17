@@ -17,7 +17,7 @@ class SQLConnector:
     def __init__(self):
         cwd = os.getcwd()
         self.cnxn = mysql.connector.connect(**config)
-        self.cursor = self.cnxn.cursor()
+        self.cursor = self.cnxn.cursor(buffered=True)
 
 
     def execute_query(self, command):
