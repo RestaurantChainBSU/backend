@@ -3,7 +3,7 @@ from mysql.connector.constants import ClientFlag
 import os
 
 config = {
-    'user': 'admin',
+    'user': 'root',
     'password': 's1a2n3y4a5',
     'host': '35.192.218.150',
     'database': 'rzfm_app',
