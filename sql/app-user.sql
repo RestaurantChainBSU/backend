@@ -3,7 +3,7 @@ use rzfm_app;
 drop table if exists APP_USER;
 
 create table APP_USER(
-	user_id int primary key auto_increment,
+	id int primary key auto_increment,
     login varchar(25) not null,
     pass varchar(25) not null,
     email varchar(40) not null, 

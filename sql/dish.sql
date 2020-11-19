@@ -3,7 +3,7 @@ use rzfm_app;
 drop table if exists DISH;
 
 create table DISH(
-	dish_id int primary key auto_increment,
+	id int primary key auto_increment,
 	dish_name varchar(200) not null,
     dish_descr varchar(500) not null,
     price decimal(9, 2) not null,

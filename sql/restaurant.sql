@@ -3,7 +3,7 @@ use rzfm_app;
 drop table if exists RESTAURANT;
 
 create table RESTAURANT(
-	rest_id int primary key auto_increment,
+	id int primary key auto_increment,
     rest_name varchar(100) not null,
     rest_descr varchar(1000) not null,
     address varchar(200) not null,
