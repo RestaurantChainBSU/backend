@@ -5,7 +5,7 @@ import os
 config = {
     'user': 'admin',
     'password': 's1a2n3y4a5',
-    'host': '35.223.243.32',
+    'host': '35.192.218.150',
     'database': 'rzfm_app',
     'client_flags': [ClientFlag.SSL],
     'ssl_ca': '/app/src/database/ssl/server-ca.pem',
