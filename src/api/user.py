@@ -24,31 +24,6 @@ login_user = api.model("login_user",
 
 @api.route('/')
 class User(Resource):
-    @api.doc('check_user',  responses={404: 'No user with such login', 400: 'Wrong password'})
-    @api.expect(login_user)
-    @api.response(code=200, description="Success")
-    def get(self):
-        """
-        Check User login info
-        """
-        
-        json_data = request.json
-
-        required_fields = ['login', 'pass']
-        check = set(required_fields).issubset({*json_data})
-        print(check)
-        if not check:
-            return {'reason': 'not all the fields are provided'}, 400
-
-        query = "SELECT * FROM APP_USER WHERE login='" + json_data["login"] + "'" 
-        res = sql_conn.execute_query(query)
-        res = list(res)
-        if res:
-            res = res[0]
-            if json_data["pass"] == res[2]:
-                return {'result': 'Successfully login'}
-        return {'result': "False"}, 404
-
     @api.doc("add_user", responses={400: "Missed required fields"})
     @api.expect(new_user)
     def post(self):
@@ -74,6 +49,23 @@ class User(Resource):
         return {'result': 'Successfully inserted'}
 
 
+@api.route('/<login>/<passw>')
+@api.param('login', 'User login')
+@api.param('passw', 'User pass')
+class User(Resource):
+    @api.doc('check_user',  responses={404: 'No user with such login', 400: 'Wrong password'})
+    @api.response(code=200, description="Success")
+    def get(self, login, passw):
+        """
+        Check User login info
+        """ 
 
-
+        query = "SELECT * FROM APP_USER WHERE login='" + str(login) + "'" 
+        res = sql_conn.execute_query(query)
+        res = list(res)
+        if res:
+            res = res[0]
+            if str(passw) == res[2]:
+                return {'result': 'Successfully login'}
+        return {'result': "False"}, 404
 
