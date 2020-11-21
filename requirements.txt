@@ -3,4 +3,5 @@ Flask==0.12
 werkzeug==0.16.1
 flask-restplus==0.13.0
 mysql-connector-python==8.0.11
+Flask-Cors==3.0.9
 
