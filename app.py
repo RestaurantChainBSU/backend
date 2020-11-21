@@ -5,7 +5,7 @@ from src.api import api
 from flask_cors import CORS
 
 flask_app = Flask(__name__)
-CORS(app)
+CORS(flask_app)
 api.init_app(flask_app)
 
 if __name__ == "__main__":
