@@ -17,26 +17,81 @@ order = api.model("order",
 "image_link" : fields.String(required=True, description="Restaurant image")
 })
 
-dish_ids = api.model("dish_ids",
+dish = api.model("dish",
 {
-        "id" : fields.Integer(required=True, description="Dish Id")
+        "id" : fields.Integer(required=True, description="Dish Id"),
+ "dish_name" : fields.String(required=True, description="Dish name"),
+"dish_descr" : fields.String(required=True, description="Dish description"),
+     "price" : fields.Float(required=True, description="Dish price"),
+"image_link" : fields.String(required=True, description="Dish image")
 })
 
 @api.route('/')
 class Order(Resource):
-    @api.doc("get_sum", responses={400: "Missed orders list"})
-    @api.expect([dish_ids])
+    @api.doc("make_order", responses={400: "Missed orders list"})
+    @api.expect([dish], validate=False)
     def post(self):
         """
-        Evaluates order price
+        Makes new order
         """
         json_data = request.json
-        ids = []
-        for dish in json_data:
-            ids.append(dish["id"])
-        str_ids = str(ids)[1:-1]
+        address  = ""
+        s = 0
+        address = json_data[0]["address"]
+        dish_amount = {}
 
-        query = "SELECT (SUM(price) over ()) as total_price from DISH where id in ("+str_ids+") limit 1;"
+        for dish in json_data[1:]:
+            s += int(dish["price"])
+            dish_amount[dish["id"]] = dish_amount.get(dish["id"], 0) + 1
+
+        query = "INSERT into  `ORDER` (address, total_price, order_status) values (" + \
+                "'" + address + "'," + \
+                "'" + str(s) + "'," + \
+                "'" + "0" + "'" + \
+                ")"
+        res = sql_conn.execute_insert_update(query)
+        inserted_id = res.lastrowid
+
+        for ids in dish_amount:
+            query = "INSERT into ORDER_DISH (order_id, dish_id, amount) values (" + \
+                "'" + str(inserted_id) + "'," + \
+                "'" + str(ids) + "'," + \
+                "'" + str(dish_amount[ids]) + "'" + \
+                ")"
+            res = sql_conn.execute_insert_update(query)
+
+        return {'result': True}
+
+@api.route("/<order_id>")
+@api.param("order_id", "Order Id")
+class GetSpecificDish(Resource):
+    @api.doc('get_order')
+    @api.response(code=200, description="Success", model=order)
+    def get(self, order_id):
+        """
+        Returns specific order
+        """
+        query = "SELECT * FROM `ORDER` where id='"+str(order_id)+"'"
         res = sql_conn.execute_query(query)
         res = list(res)
-        return {'result': float(res[0][0])}
+
+        if res:
+            item = res[0]
+            order = {}
+            order["id"] = item[0]
+            order["address"] = item[1]
+            order["total_price"] = float(item[2])
+            order["order_status"] = item[3]
+            return order
+        else:
+            return []
+
+    @api.doc('delete_order')
+    @api.response(code=200, description="Success")
+    def delete(self, order_id):
+        """
+        Delets specific order
+        """
+        query = "DELETE FROM `ORDER` where id='"+str(order_id)+"'"
+        res = sql_conn.execute_query(query)
+
