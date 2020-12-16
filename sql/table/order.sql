@@ -8,3 +8,4 @@ create table `ORDER`(
 	total_price decimal(10, 2) not null,
     order_status int not null
 );
+
