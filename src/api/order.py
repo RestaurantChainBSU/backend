@@ -95,3 +95,27 @@ class GetSpecificDish(Resource):
         query = "DELETE FROM `ORDER` where id='"+str(order_id)+"'"
         res = sql_conn.execute_query(query)
 
+@api.route("/all")
+class GetAllOrders(Resource):
+    @api.doc('get_all_orders')
+    @api.response(code=200, description="Success", model=[order])
+    def get(self):
+        """
+        Returns list of all orders
+        """
+        query = "SELECT id, address, total_price, order_status FROM `ORDER`"
+        res = sql_conn.execute_query(query)
+        res = list(res)
+        orders_from_db = []
+
+        if res:
+            for item in res:
+                order = {}
+                order["id"] = item[0]
+                order["address"] = item[1]
+                order["total_price"] = float(item[2])
+                order["order_status"] = item[3]
+                orders_from_db.append(order)
+            return orders_from_db
+        else:
+            return []

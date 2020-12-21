@@ -105,3 +105,29 @@ class GetSpecificDish(Resource):
                 "price='"+ str(json_data["price"]) + "'," + \
                 "image_link='"+ json_data["image_link"] + "' where id='"+str(dish_id)+"'"
         res = sql_conn.execute_insert_update(query)
+
+@api.route("/all")
+class GetAllDishes(Resource):
+    @api.doc('get_all_dishes')
+    @api.response(code=200, description="Success", model=[dish])
+    def get(self):
+        """
+        Returns list of all dishes
+        """
+        dishes_from_db = []
+        query = "SELECT id, dish_name, dish_descr, price, image_link FROM DISH"
+        res = sql_conn.execute_query(query)
+        res = list(res)
+        if res:
+            for item in res:
+                dish = {}
+                dish["id"] = item[0]
+                dish["dish_name"] = item[1]
+                dish["dish_descr"] = item[2]
+                dish["price"] = float(item[3])
+                dish["image_link"] = item[4]
+                dishes_from_db.append(dish)
+            return dishes_from_db
+        else:
+            return []
+
