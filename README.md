@@ -11,7 +11,7 @@ This is the repository containing the API of an restaurant chain. The project as
 docker build -t rzfm .
 ```
 
-* Run app localy:
+* Run app locally:
 ```bash
 docker run -p 8080:8080 --rm -it rzfm
 ```
