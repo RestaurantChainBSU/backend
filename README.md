@@ -3,7 +3,7 @@
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/RestaurantChainBSU/backend?branch=main)](https://bettercodehub.com/)
 
-This is the repository containing the API of an resturant chain. The project as a whole consists of a website, a mobile app, and this API. 
+This is the repository containing the API of an restaurant chain. The project as a whole consists of a website, a mobile app, and this API. 
 
 ## Build 
 * Build docker container with app:
