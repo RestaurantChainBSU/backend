@@ -12,7 +12,6 @@ create table APP_USER(
 );
 
 
-
 insert into APP_USER(login, pass, email, first_name, role_type) values("kirillzhelt", "fitbitteam", "kzhelt@fitbit.com", "kirill", "1");
 insert into APP_USER(login, pass, email, first_name, role_type) values("volodya", "vov!vov", "vovandroid@milo.com", "vova", "0");
 insert into APP_USER(login, pass, email, first_name, role_type) values("dima1337", "1337dima", "furs1348@rdp.com", "rdprule", "1");
